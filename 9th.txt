@@ -1,0 +1,22 @@
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from matplotlib.pyplot import show,scatter,contourf
+ 
+np.random.seed(0)
+x= np.random.randn(100,2)
+y= np.where(x[:,0] + x[:,1] > 0,1,0)
+ 
+model = LogisticRegression()
+model.fit(x,y)
+ 
+x_min, x_max = x[:,0].min() - 0.5, x[:,0].max() + 0.5
+y_min, y_max = x[:,1].min() - 0.5, x[:,0].max() + 0.5
+h = 0.02
+ 
+xx, yy = np.meshgrid(np.arange(x_min,x_max,h),np.arange(y_min,y_max,h))
+z = model.predict(np.c_[xx.ravel(), yy.ravel()])
+ 
+z = z.reshape(xx.shape)
+contourf(xx,yy,z, cmap='rainbow',alpha=0.5)
+scatter(x[:,0],x[:,1],c=y,edgecolors='k')
+show()
